@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "test": "vitest --coverage",
+    "test": "vitest --coverage --run",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prepare": "husky"
@@ -16,6 +16,8 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.4.1",
+    "@commitlint/config-conventional": "^19.4.1",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.1",
@@ -28,12 +30,12 @@
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "husky": "^9.1.5",
     "jsdom": "^23.0.1",
     "msw": "^2.0.11",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
-    "vitest": "^1.1.0",
-    "husky": "^9.1.5"
+    "vitest": "^1.1.0"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
