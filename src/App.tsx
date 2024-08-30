@@ -1,38 +1,50 @@
-import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+// src/App.tsx
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchUsers } from './Redux/App/Actions';
+import { Container, Typography,Paper } from '@mui/material';
+import UserActions from './components/userActions';
+import UserList from './components/userList';
+import Box from '@mui/material/Box';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
-function App() {
-  const [count, setCount] = useState(0);
 
-  const [todos, setTodos] = useState([]);
+const App: React.FC = () => {
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    fetch("https://dummyjson.com/todos")
-      .then((res) => res.json())
-      .then((res) => setTodos(res.todos));
-  }, []);
+    useEffect(() => {
+        const departments = ['Engineering', 'Marketing', 'Human Resources'];
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        {todos.length && <div>Todo List : {todos.length}</div>}
-      </div>
-    </>
-  );
-}
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then((response) => response.json())
+            .then((data) => {
+                const users = data.map((user: any) => ({
+                    id: user.id,
+                    firstName: user.name.split(' ')[0],
+                    lastName: user.name.split(' ')[1] || '',
+                    email: user.email,
+                    department: departments[Math.floor(Math.random() * departments.length)], 
+                }));
+                dispatch(fetchUsers(users));
+            });
+    }, [dispatch]);
+
+    
+    return (
+        <Container maxWidth="lg" sx={{ mt: 4 }}>
+        <Paper elevation={3} sx={{ p: 4, borderRadius: 2, backgroundColor: '#f5f5f5',height:'80vh' }}>
+            <Typography variant="h4" gutterBottom sx={{ mb: 4, fontWeight: 'bold', color: '#1976d2' }}>
+                User Management Dashboard
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <UserActions />
+                <UserList />
+            </Box>
+        </Paper>
+        <ToastContainer />
+    </Container>
+    );
+};
 
 export default App;
