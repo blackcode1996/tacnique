@@ -14,6 +14,7 @@ import { editUser, deleteUser, deleteAllUsers } from '../Redux/App/Actions';
 import UserForm from './userForm';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { toast } from 'react-toastify';
 
 const UserList: React.FC = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ const UserList: React.FC = () => {
   };
   const handleDelete = (id: number) => {
     dispatch(deleteUser(id));
+    toast.success('User deleted successfully');
   };
 
   const handleCloseUserForm = () => {
@@ -70,16 +72,19 @@ const UserList: React.FC = () => {
   }, [users, searchTerm]);
 
   const handleDeleteAll = () => {
-    if (window.confirm('Are you sure you want to delete all users?')) {
-      dispatch(deleteAllUsers());
-      setSelectionModel([]);
+    if (allRowsSelected) {
+      if (window.confirm('Are you sure you want to delete all users?')) {
+        dispatch(deleteAllUsers());
+        setSelectionModel([]);
+        toast.success('All users deleted successfully');
+      }
+    } else {
+      if (window.confirm(`Are you sure you want to delete selected users (${selectionModel.length})?`)) {
+        selectionModel.forEach((id) => dispatch(deleteUser(Number(id))));
+        setSelectionModel([]);
+        toast.success('Selected users deleted successfully');
+      }
     }
-  };
-
-  const handleEditAll = () => {
-    // Open a dialog to edit all selected users
-    // This is a placeholder - you'll need to implement this functionality
-    console.log("Edit all selected users:", selectionModel);
   };
 
   const allRowsSelected = selectionModel.length === filteredUsers.length;
@@ -139,7 +144,7 @@ const UserList: React.FC = () => {
         sx={{ mb: 2 }}
       />
       <Box sx={{ mb: 2 }}>
-        {allRowsSelected && (
+        {selectionModel.length > 0 && (
           <>
             <Button 
               variant="contained" 
@@ -147,15 +152,15 @@ const UserList: React.FC = () => {
               onClick={handleDeleteAll} 
               sx={{ mr: 2 }}
             >
-              Delete All ({selectionModel.length})
+              {allRowsSelected ? `Delete All (${selectionModel.length})` : `Delete Selected (${selectionModel.length})`}
             </Button>
-            <Button 
+            {/* <Button 
               variant="contained" 
               color="primary" 
               onClick={handleEditAll}
             >
-              Edit All ({selectionModel.length})
-            </Button>
+              Edit Selected ({selectionModel.length})
+            </Button> */}
           </>
         )}
       </Box>

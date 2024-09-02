@@ -33,11 +33,11 @@ const App: React.FC = () => {
     
     return (
         <Container maxWidth="lg" sx={{ mt: 4 }}>
-        <Paper elevation={3} sx={{ p: 4, borderRadius: 2, backgroundColor: '#f5f5f5',height:'80vh' }}>
+        <Paper elevation={3} sx={{ p: 6, borderRadius: 2, backgroundColor: '#f5f5f5',height:'80vh' }}>
             <Typography variant="h4" gutterBottom sx={{ mb: 4, fontWeight: 'bold', color: '#1976d2' }}>
                 User Management Dashboard
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, }}>
                 <UserActions />
                 <UserList />
             </Box>
