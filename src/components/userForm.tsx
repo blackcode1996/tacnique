@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { addUser, editUser } from '../Redux/App/Actions';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
 
 interface UserFormProps {
     user?: any;
@@ -20,8 +21,10 @@ const UserForm: React.FC<UserFormProps> = ({ user, onClose }) => {
     const handleSubmit = () => {
         if (user) {
             dispatch(editUser(formData));
+            toast.success('User updated successfully');
         } else {
             dispatch(addUser(formData));
+            toast.success('User added successfully');
         }
         onClose();
     };
